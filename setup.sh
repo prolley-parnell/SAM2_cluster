@@ -1,0 +1,24 @@
+#Run this from device connected to drive with data
+USER=$1 #sXXXXXXX
+afs_project_path=/afs/inf.ed.ac.uk/user/s20/${USER}/SAM2_cluster #The s20 is the first two numbers of the user student number
+
+
+#Make the project path in AFS if it does not exist already
+if [ ! -d "${afs_project_path}" ]; then
+  mkdir -p ${afs_project_path}
+fi
+
+#If there is no data/input folder in the project folder, then make it.
+afs_src="${afs_project_path}/data/input"
+
+if [ ! -d ${afs_src} ]; then
+  mkdir -p ${afs_src}
+fi
+
+#Download the SAM2 checkpoints to AFS if the checkpoints folder does not already exist
+if [ ! -d "${afs_src}/checkpoints" ]; then
+  #Run any installation commands
+  mkdir -p "${afs_src}/checkpoints/"
+  wget -P "${afs_src}/checkpoints/" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
+fi
+
