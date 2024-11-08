@@ -1,24 +1,48 @@
-#Run this from device connected to drive with data
-USER=$1 #sXXXXXXX
-afs_project_path=/afs/inf.ed.ac.uk/user/s20/${USER}/SAM2_cluster #The s20 is the first two numbers of the user student number
+USER=$1 #sXXXXXXXX
+PROJECT_NAME=$2
+afs_src=/afs/inf.ed.ac.uk/user/s20/${USER}/${PROJECT_NAME}/data/input #s20 is the first two digits of the student number given in $USER
 
-
-#Make the project path in AFS if it does not exist already
-if [ ! -d "${afs_project_path}" ]; then
-  mkdir -p ${afs_project_path}
+#Install miniconda if it is not already installed
+conda_path=/home/${USER}/miniconda3
+if [ ! -d "${conda_path}" ]; then
+  mkdir -p "${conda_path}"
+  wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O "${conda_path}"/miniconda.sh
+  bash "${conda_path}"/miniconda.sh -b -u -p "${conda_path}"
+  rm "${conda_path}"/miniconda.sh
+  source "${conda_path}"/bin/activate
+  conda init --all
+  conda config --set auto_activate_base false
 fi
 
-#If there is no data/input folder in the project folder, then make it.
-afs_src="${afs_project_path}/data/input"
+project_path=/home/${USER}/${PROJECT_NAME}
 
-if [ ! -d ${afs_src} ]; then
-  mkdir -p ${afs_src}
+#Clone the SAM2 repo -if it is not already present
+if [ ! -d "${project_path}" ]; then
+  mkdir -p ${project_path}
 fi
 
-#Download the SAM2 checkpoints to AFS if the checkpoints folder does not already exist
-if [ ! -d "${afs_src}/checkpoints" ]; then
-  #Run any installation commands
-  mkdir -p "${afs_src}/checkpoints/"
-  wget -P "${afs_src}/checkpoints/" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
+dfs_dst="${project_path}/data/input"
+
+if [ ! -d ${dfs_dst} ]; then
+  mkdir -p ${dfs_dst}
 fi
+
+#Move any file names from experiments.txt from the AFS to DFS - if not already present
+rsync --archive --update --compress --progress ${afs_src}/ ${dfs_dst}
+
+#Clone the SAM2 repo -if it is not already present
+if [ ! -d "${project_path}/sam2" ]; then
+  cd ${project_path} || echo "Could not enter folder ${project_path}" && exit
+  git clone https://github.com/facebookresearch/sam2.git
+  cd sam2 & pip install -e .
+fi
+
+if [ ! -d "${dfs_dst}/configs" ]; then
+  mkdir -p "${dfs_dst}/configs"
+  cp "${project_path}/sam2/configs/sam2.1/sam2.1_hiera_l.yaml" "${dfs_dst}/configs/"
+fi
+
+
+
+
 
