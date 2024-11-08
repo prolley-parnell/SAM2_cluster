@@ -30,6 +30,7 @@ fi
 
 #Synchronise the folders and move the AFS input to DFS input
 rsync --archive --update --compress --progress ${afs_src}/ ${dfs_dst}
+#Code stops after this line - not sure why
 
 #Clone the SAM2 repo -if it is not already present
 if [ ! -d "${project_path}/sam2" ]; then
