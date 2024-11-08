@@ -17,3 +17,6 @@ Save any data in ```/home/{USER}/{PROJECT_NAME}```
 
 `segment.py` - The code that performs the segmentation using SAM2 and exports the result as `.npy`
 
+`single_job.sh` - A single instance that calls `segment.py` with arguments
+
+The structure for the `array_job.sh` is taken from [cluster-scripts](https://github.com/cdt-data-science/cluster-scripts/tree/master). This is an incredibly useful repo for use with SLURM. Details on how to use this file are contained within it.
