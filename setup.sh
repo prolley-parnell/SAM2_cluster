@@ -16,18 +16,19 @@ fi
 
 project_path=/home/${USER}/${PROJECT_NAME}
 
-#Clone the SAM2 repo -if it is not already present
+#Make the project path if it is not present
 if [ ! -d "${project_path}" ]; then
   mkdir -p ${project_path}
 fi
 
 dfs_dst="${project_path}/data/input"
 
+#Make the data input path if it is not present
 if [ ! -d ${dfs_dst} ]; then
   mkdir -p ${dfs_dst}
 fi
 
-#Move any file names from experiments.txt from the AFS to DFS - if not already present
+#Synchronise the folders and move the AFS input to DFS input
 rsync --archive --update --compress --progress ${afs_src}/ ${dfs_dst}
 
 #Clone the SAM2 repo -if it is not already present
@@ -37,6 +38,7 @@ if [ ! -d "${project_path}/sam2" ]; then
   cd sam2 & pip install -e .
 fi
 
+#Copy the config files from SAM2 to the input folder
 if [ ! -d "${dfs_dst}/configs" ]; then
   mkdir -p "${dfs_dst}/configs"
   cp "${project_path}/sam2/configs/sam2.1/sam2.1_hiera_l.yaml" "${dfs_dst}/configs/"
