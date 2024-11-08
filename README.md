@@ -4,6 +4,9 @@ Repository for running [SAM2](https://github.com/facebookresearch/sam2/tree/main
 This code has been separated into two branches, one for use on the cluster Distributed File System (DFS) and one for use on AFS, the University of Edinburgh file storage system for student desktops.
 The third branch is called "scratch" and when both the AFS and DFS setup is complete, switch to that branch and copy the git repo to the scratch space.
 
+`PROJECT_NAME=segment`
+
+
 ```
 bash setup.sh {STUDENT_NUMBER} {PROJECT_NAME}
 ```
