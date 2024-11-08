@@ -1,6 +1,6 @@
 #Run this from device connected to drive with data
 USER=$1 #sXXXXXXX
-PROJECT_NAME=$2 #sam2_cluster
+PROJECT_NAME=segment
 afs_project_path=/afs/inf.ed.ac.uk/user/s20/${USER}/${PROJECT_NAME} #The s20 is the first two numbers of the user student number
 
 
