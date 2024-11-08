@@ -1,6 +1,7 @@
 #Run this from device connected to drive with data
 USER=$1 #sXXXXXXX
-afs_project_path=/afs/inf.ed.ac.uk/user/s20/${USER}/SAM2_cluster #The s20 is the first two numbers of the user student number
+PROJECT_NAME=$2 #sam2_cluster
+afs_project_path=/afs/inf.ed.ac.uk/user/s20/${USER}/${PROJECT_NAME} #The s20 is the first two numbers of the user student number
 
 
 #Make the project path in AFS if it does not exist already
