@@ -7,7 +7,7 @@ The third branch is called "scratch" and when both the AFS and DFS setup is comp
 `PROJECT_NAME=segment`
 
 ```
-bash setup.sh {STUDENT_NUMBER} {PROJECT_NAME}
+bash setup.sh {STUDENT_NUMBER}
 ```
 
 Save any data in ```/home/{USER}/{PROJECT_NAME}```

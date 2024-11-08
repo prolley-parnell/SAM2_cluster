@@ -1,5 +1,5 @@
 USER=$1 #sXXXXXXXX
-PROJECT_NAME=$2
+PROJECT_NAME=segment
 afs_src=/afs/inf.ed.ac.uk/user/s20/${USER}/${PROJECT_NAME}/data/input #s20 is the first two digits of the student number given in $USER
 
 #Install miniconda if it is not already installed
