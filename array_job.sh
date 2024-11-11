@@ -36,7 +36,7 @@
 #SBATCH --error=/home/%u/slogs/slurm-%A_%a.out
 
 # Maximum number of nodes to use for the job
-#SBATCH --nodes=4
+#SBATCH --nodes=1
 
 # Generic resources to use - typically you'll want gpu:n to get n gpus
 #SBATCH --gres=gpu:1
@@ -132,6 +132,9 @@ mkdir -p ${dst_path}  # make it if required
 #       https://download.samba.org/pub/rsync/rsync.html
 
 rsync --archive --update --compress --progress ${src_path}/ ${dst_path}
+
+#Extract the input tar containing all the video
+tar --exclude="._*" -xf "${dst_path}/input.tar" "${dst_path}/"
 
 # ==============================
 # Finally, run the experiment!
