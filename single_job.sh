@@ -6,7 +6,7 @@ tar -xf "${scratch_input}/${file_name}.tar" -C "${scratch_input}/${file_name}"
 
 python segment.py \
       --video_dir="${scratch_input}/${file_name}" \
-      --model_cfg="${scratch_input}/configs/sam2.1/sam2.1_hiera_l.yaml" \
+      --model_cfg="${scratch_input}/configs/sam2.1_hiera_l.yaml" \
       --checkpoint="${scratch_input}/checkpoints/sam2.1_hiera_large.pt" \
       --annotations="${scratch_input}/${file_name}/${file_name}.csv" \
       --experiment_name="${file_name}" \
