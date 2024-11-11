@@ -55,7 +55,7 @@ def main(args):
 
     #--- Initialise predictor
     predictor = build_sam2_video_predictor(args.model_cfg, args.checkpoint, device=device)
-    inference_state = predictor.init_state(video_path=video_dir, offload_video_to_cpu=True, offload_state_to_cpu=True)
+    inference_state = predictor.init_state(video_path=video_dir, offload_video_to_cpu=True, offload_state_to_cpu=False)
 
     #--- Load Video Annotations
     csv_x, csv_y, csv_flag, csv_frame = np.loadtxt(

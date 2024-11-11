@@ -30,19 +30,19 @@
 # i.e. `# # SBATCH ...` -> `#SBATCH ...`
 
 # Location for stdout log - see https://slurm.schedmd.com/sbatch.html#lbAH
-#SBATCH --output=/home/%u/slurm_logs/slurm-%A_%a.out
+#SBATCH --output=/home/%u/slogs/slurm-%A_%a.out
 
 # Location for stderr log - see https://slurm.schedmd.com/sbatch.html#lbAH
-#SBATCH --error=/home/%u/slurm_logs/slurm-%A_%a.out
+#SBATCH --error=/home/%u/slogs/slurm-%A_%a.out
 
 # Maximum number of nodes to use for the job
-#SBATCH --nodes=1
+#SBATCH --nodes=4
 
 # Generic resources to use - typically you'll want gpu:n to get n gpus
 #SBATCH --gres=gpu:1
 
 # Megabytes of RAM required. Check `cluster-status` for node configurations
-#SBATCH --mem=14000
+#SBATCH --mem=20000
 
 # Number of CPUs to use. Check `cluster-status` for node configurations
 #SBATCH --cpus-per-task=4
@@ -51,7 +51,7 @@
 #SBATCH --time=1-04:00:00
 
 # Partition of the cluster to pick nodes from (check `sinfo`)
-# #SBATCH --partition=PGR-Standard
+#SBATCH --partition=PGR-Standard
 
 # Any nodes to exclude from selection
 # #SBATCH --exclude=charles[05,12-18]
@@ -72,7 +72,7 @@ echo "Job started: $dt"
 # Environment setup
 # ===================
 
-echo "Setting up bash enviroment"
+echo "Setting up bash environment"
 
 # Make available all commands on $PATH as on headnode
 source ~/.bashrc
@@ -118,8 +118,8 @@ project_name=segment
 src_path=/home/${USER}/${project_name}/data/input
 
 # input data directory path on the scratch disk of the node
-dest_path=${SCRATCH_HOME}/${project_name}/data/input
-mkdir -p ${dest_path}  # make it if required
+dst_path=${SCRATCH_HOME}/${project_name}/data/input
+mkdir -p ${dst_path}  # make it if required
 
 # Important notes about rsync:
 # * the --compress option is going to compress the data before transfer to send
@@ -131,7 +131,7 @@ mkdir -p ${dest_path}  # make it if required
 # * for more about the (endless) rsync options, see the docs:
 #       https://download.samba.org/pub/rsync/rsync.html
 
-rsync --archive --update --compress --progress ${src_path}/ ${dest_path}
+rsync --archive --update --compress --progress ${src_path}/ ${dst_path}
 
 # ==============================
 # Finally, run the experiment!
@@ -148,7 +148,7 @@ experiment_text_file=$1
 data_file="`sed \"${SLURM_ARRAY_TASK_ID}q;d\" ${experiment_text_file}`"
 
 echo "Analysing ${data_file}"
-bash single_job.sh ${data_file} ${src_path} ${dest_path}
+bash single_job.sh ${data_file} ${src_path} ${dst_path}
 echo "Command ran successfully!"
 
 
@@ -161,8 +161,8 @@ echo "Command ran successfully!"
 echo "Moving output data back to DFS"
 
 src_path=${SCRATCH_HOME}/${project_name}/data/output
-dest_path=/home/${USER}/${project_name}/data/output
-rsync --archive --update --compress --progress ${src_path}/ ${dest_path}
+dst_path=/home/${USER}/${project_name}/data/output
+rsync --archive --update --compress --progress ${src_path}/ ${dst_path}
 
 
 # =========================
