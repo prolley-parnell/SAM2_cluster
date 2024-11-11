@@ -47,15 +47,15 @@ def main(args):
 
     # scan all the JPEG frame names in this directory
     frame_names = [
-        p for p in os.listdir(video_dir)
-        if os.path.splitext(p)[-1] in [".jpg", ".jpeg", ".JPG", ".JPEG"]
+        p for p in os.listdir(video_dir) #This code struggles if the folder contains hidden .jpeg files after unzipping.
+        if not p.startswith('.') and os.path.splitext(p)[-1] in [".jpg", ".jpeg", ".JPG", ".JPEG"]
     ]
     frame_names.sort(key=lambda p: int(os.path.splitext(p)[0]))
 
 
     #--- Initialise predictor
     predictor = build_sam2_video_predictor(args.model_cfg, args.checkpoint, device=device)
-    inference_state = predictor.init_state(video_path=video_dir)
+    inference_state = predictor.init_state(video_path=video_dir, offload_video_to_cpu=True, offload_state_to_cpu=True)
 
     #--- Load Video Annotations
     csv_x, csv_y, csv_flag, csv_frame = np.loadtxt(
@@ -64,14 +64,17 @@ def main(args):
     frame_idx = csv_frame.astype(int)
     labels = csv_flag.astype(int)
     points = np.column_stack((csv_x, csv_y)).astype(np.float32)
-    #--- Add annotations to predictor
-    _, _, out_mask_logits = predictor.add_new_points_or_box(
-        inference_state=inference_state,
-        frame_idx=frame_idx,
-        obj_id=1,
-        points=points,
-        labels=labels,
-    )
+
+    unique_frames = np.unique(frame_idx)
+    for u in unique_frames:
+        #--- Add annotations to predictor
+        _, _, out_mask_logits = predictor.add_new_points_or_box(
+            inference_state=inference_state,
+            frame_idx=u,
+            obj_id=1,
+            points=points[frame_idx == u],
+            labels=labels[frame_idx == u],
+        )
 
     #--- Propagate through video
 
