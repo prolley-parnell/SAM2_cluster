@@ -146,6 +146,8 @@ tar --exclude="._*" -xf "${dst_path}/input.tar" -C "${dst_path}/"
 src_path=${SCRATCH_HOME}/${project_name}/data/input
 dst_path=${SCRATCH_HOME}/${project_name}/data/output
 
+mkdir -p ${dst_path}
+
 experiment_text_file=$1
 #COMMAND="`sed \"${SLURM_ARRAY_TASK_ID}q;d\" ${experiment_text_file}`"
 data_file="`sed \"${SLURM_ARRAY_TASK_ID}q;d\" ${experiment_text_file}`"
