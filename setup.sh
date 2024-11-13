@@ -2,6 +2,9 @@
 PROJECT_NAME=segment
 afs_src=/afs/inf.ed.ac.uk/user/s20/${USER}/${PROJECT_NAME}/data/input #s20 is the first two digits of the student number given in $USER
 
+echo "You are on branch `dfs` so are setting up the DFS."
+echo "Press Ctrl+C if this is not correct and switch to the correct branch."
+
 #Install miniconda if it is not already installed
 conda_path=/home/${USER}/miniconda3
 if [ ! -d "${conda_path}" ]; then
