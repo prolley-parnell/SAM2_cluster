@@ -7,13 +7,21 @@ The third branch is called "scratch" and when both the AFS and DFS setup is comp
 `PROJECT_NAME=segment`
 
 ```
-bash setup.sh {STUDENT_NUMBER}
+bash setup.sh
+```
+
+To open up the next set of files and scripts to use on the array job, run:
+```
+git switch scratch
+
 ```
 
 Save any data in ```/home/{USER}/{PROJECT_NAME}```
 
 ## File List
-`experiments.txt` - Passed as an argument to the `slurm_arrayjob.sh` with each line consisting of a relative path to a `.tar`file containing video frames and an annotation `.csv`. A subset of `experiments_full.txt`.
+`experiments.txt` - Passed as an argument to the `array_job.sh` with each line consisting of an experiment name. 
+Each experiment name is in the `[segment_folder]/data/input` file with a `.tar.bz2` file containing video frames and an annotation `.csv`.
+A subset of `experiments_full.txt`.
 
 `experiments_full.txt` - A full list of all the particular experiment names that will be evaluated by this code, saved for future reference.
 
