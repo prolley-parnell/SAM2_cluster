@@ -29,7 +29,8 @@ fi
 
 #Synchronise the folders and move the AFS input to DFS input
 rsync --archive --update --compress --progress ${afs_src}/ ${dfs_dst}
-#Code stops after this line - not sure why
+
+echo "${afs_src}/ up to date with ${dfs_dst}"
 
 #Clone the SAM2 repo -if it is not already present
 if [ ! -d "${project_path}/sam2" ]; then
@@ -59,7 +60,7 @@ fi
 #Ensure that you can use the "run_experiments" wrapper
 #echo 'export PATH=/home/$USER/cluster-scripts/experiments:$PATH' >> ~/.bashrc
 if [ -f "${dfs_dst}/input.tar.bz2" ]; then
-  tar --exclude="._*" -xjf "${dfs_dst}/input.tar.bz2" -C "${dfs_dst}/"
+  tar --exclude="._*" -xjvf "${dfs_dst}/input.tar.bz2" -C "${dfs_dst}/"
 else
   echo "Could not find '${dfs_dst}/input.tar.bz2'"
 fi
