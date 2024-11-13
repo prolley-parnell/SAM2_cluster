@@ -57,5 +57,9 @@ if [ ! -f "${project_path}/sam2/checkpoints/sam2.1_hiera_large.pt" ]; then
 fi
 
 #Ensure that you can use the "run_experiments" wrapper
-echo 'export PATH=/home/$USER/cluster-scripts/experiments:$PATH' >> ~/.bashrc
-
+#echo 'export PATH=/home/$USER/cluster-scripts/experiments:$PATH' >> ~/.bashrc
+if [ ! -f "${dfs_dst}/input.tar.bz2" ]; then
+  tar --exclude="._*" -xjf "${dfs_dst}/input.tar.bz2" -C "${dfs_dst}/"
+else
+  echo "Could not find '${dfs_dst}/input.tar.bz2'"
+fi
