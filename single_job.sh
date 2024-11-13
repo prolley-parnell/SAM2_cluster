@@ -2,7 +2,7 @@ file_name=$1 #YYMMDD-HHMM_camX_fruit_sessionY
 scratch_input=$2 #src_path=${SCRATCH_HOME}/${PROJECT_NAME}/data/input
 scratch_output=$3 #dest_path=${SCRATCH_HOME}/${PROJECT_NAME}/data/output
 mkdir -p "${scratch_input}/${file_name}"
-tar --exclude="._*" -xf "${scratch_input}/${file_name}.tar" -C "${scratch_input}/"
+tar --exclude="._*" -xjf "${scratch_input}/${file_name}.tar.bz2" -C "${scratch_input}/"
 
 python segment.py \
       --video_dir="${scratch_input}/${file_name}" \

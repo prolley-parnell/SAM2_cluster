@@ -134,7 +134,7 @@ mkdir -p ${dst_path}  # make it if required
 rsync --archive --update --compress --progress ${src_path}/ ${dst_path}
 
 #Extract the input tar containing all the video
-tar --exclude="._*" -xf "${dst_path}/input.tar" -C "${dst_path}/"
+tar --exclude="._*" -xjf "${dst_path}/input.tar.bz2" -C "${dst_path}/"
 
 # ==============================
 # Finally, run the experiment!
