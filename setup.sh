@@ -56,6 +56,6 @@ if [ ! -f "${project_path}/sam2/checkpoints/sam2.1_hiera_large.pt" ]; then
   wget -P "${project_path}/sam2/checkpoints" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
 fi
 
-
-
+#Ensure that you can use the "run_experiments" wrapper
+echo 'export PATH=/home/$USER/cluster-scripts/experiments:$PATH' >> ~/.bashrc
 
