@@ -47,12 +47,12 @@ if [ ! -d "${project_path}/sam2" ]; then
   pip install -e .
 fi
 
-#Copy the config files from SAM2 to the input folder
-if [ ! -d "${dfs_dst}/configs" ]; then
-  mkdir -p "${dfs_dst}/configs"
-  cp "${project_path}/sam2/sam2/configs/sam2.1/sam2.1_hiera_l.yaml" "${dfs_dst}/configs/"
+#Download the SAM2 checkpoints if checkpoints folder does not already exist - Edited because it does not need to be imported with new data
+if [ ! -d "${project_path}/sam2/checkpoints" ]; then
+  #Run any installation commands
+  mkdir -p "${project_path}/sam2/checkpoints"
+  wget -P "${project_path}/sam2/checkpoints" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
 fi
-
 
 
 
