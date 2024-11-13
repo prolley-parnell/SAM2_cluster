@@ -1,5 +1,6 @@
 #Run this from device connected to drive with data
 USER=$1 #sXXXXXXX
+input_folder=$2 #Path to the /data folder that contains an input directory that is not zipped
 PROJECT_NAME=segment
 afs_project_path=/afs/inf.ed.ac.uk/user/s20/${USER}/${PROJECT_NAME} #The s20 is the first two numbers of the user student number
 
@@ -14,6 +15,12 @@ afs_src="${afs_project_path}/data/input"
 
 if [ ! -d ${afs_src} ]; then
   mkdir -p ${afs_src}
+fi
+
+if [ ! -f "${input_folder}/input.tar.bz2" ]; then
+  cd ${input_folder}
+  tar --no-xattrs --exclude="._*" -cjf input.tar.bz2 -C input
+  mv input.tar.bz2 ${afs_src}
 fi
 
 #Download the SAM2 checkpoints to AFS if the checkpoints folder does not already exist
