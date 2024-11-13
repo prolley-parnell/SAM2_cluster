@@ -45,6 +45,8 @@ if [ ! -d "${project_path}/sam2" ]; then
   export TMPDIR TMP TEMP
   cd sam2
   pip install -e .
+  conda env config vars set SAM2_HOME="${project_path}/sam2"
+  conda deactivate
 fi
 
 #Download the SAM2 checkpoints if checkpoints folder does not already exist - Edited because it does not need to be imported with new data
