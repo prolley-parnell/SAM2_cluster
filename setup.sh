@@ -4,6 +4,9 @@ input_folder=$2 #Path to the /data folder that contains an input directory that 
 PROJECT_NAME=segment
 afs_project_path=/afs/inf.ed.ac.uk/user/s20/${USER}/${PROJECT_NAME} #The s20 is the first two numbers of the user student number
 
+echo "You are on branch `afs` so are setting up the AFS."
+echo "Press Ctrl+C if this is not correct and switch to the correct branch."
+
 
 #Make the project path in AFS if it does not exist already
 if [ ! -d "${afs_project_path}" ]; then
