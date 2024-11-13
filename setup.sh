@@ -23,10 +23,3 @@ if [ ! -f "${input_folder}/input.tar.bz2" ]; then
   mv input.tar.bz2 ${afs_src}
 fi
 
-#Download the SAM2 checkpoints to AFS if the checkpoints folder does not already exist
-if [ ! -d "${afs_src}/checkpoints" ]; then
-  #Run any installation commands
-  mkdir -p "${afs_src}/checkpoints/"
-  wget -P "${afs_src}/checkpoints/" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
-fi
-
