@@ -1,4 +1,4 @@
-USER=$1 #sXXXXXXXX
+#USER=$1 #sXXXXXXXX
 PROJECT_NAME=segment
 afs_src=/afs/inf.ed.ac.uk/user/s20/${USER}/${PROJECT_NAME}/data/input #s20 is the first two digits of the student number given in $USER
 
@@ -50,7 +50,7 @@ fi
 #Copy the config files from SAM2 to the input folder
 if [ ! -d "${dfs_dst}/configs" ]; then
   mkdir -p "${dfs_dst}/configs"
-  cp "${project_path}/sam2/configs/sam2.1/sam2.1_hiera_l.yaml" "${dfs_dst}/configs/"
+  cp "${project_path}/sam2/sam2/configs/sam2.1/sam2.1_hiera_l.yaml" "${dfs_dst}/configs/"
 fi
 
 
