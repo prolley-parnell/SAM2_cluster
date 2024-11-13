@@ -19,7 +19,7 @@ fi
 
 if [ ! -f "${input_folder}/input.tar.bz2" ]; then
   cd ${input_folder}
-  tar --no-xattrs --exclude="._*" -cjf input.tar.bz2 -C input
+  tar --no-xattrs --exclude="._*" -cjf input.tar.bz2 input
   mv input.tar.bz2 ${afs_src}
 fi
 
