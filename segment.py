@@ -86,7 +86,17 @@ def main(args):
             for i, out_obj_id in enumerate(out_obj_ids)
         }
 
-    np.save(f"{args.output_destination}/{args.experiment_name}.npy", video_segments)
+    frames = [f for f in video_segments]  # This extracts the frame indices
+    output_stacked_mask = []
+    for f in frames:
+        for out_obj_id, out_mask in video_segments[f].items():
+            flat_mask = np.flatnonzero(out_mask)
+            if len(flat_mask) > 0: #Ensure not to waste space with any empty frames
+                output_stacked_mask.append(np.column_stack((np.ones_like(flat_mask) * f, flat_mask)))
+    sparse = np.vstack(output_stacked_mask)
+
+    #np.save(f"{args.output_destination}/{args.experiment_name}.npy", video_segments)
+    np.savez_compressed(f"{args.output_destination}/{args.experiment_name}", obj_0=sparse )
 
 
 if __name__ == "__main__":
