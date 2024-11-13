@@ -26,7 +26,9 @@ The structure for the `array_job.sh` is taken from [cluster-scripts](https://git
 
 Assuming you have installed `cluster-scripts` to your DFS and run the `setup.sh` in AFS then DFS, run:
 
-```run_experiment -b array_job.sh -e experiments.txt -m 12```
+```
+run_experiment -b array_job.sh -e experiments.txt -m 12
+```
 
 If `run_experiment` can't be found, you may need to perform the following first:
 ```

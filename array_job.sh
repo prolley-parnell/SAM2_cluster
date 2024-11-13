@@ -11,12 +11,12 @@
 # EXPT_FILE=experiments.txt  # <- this has a command to run on each line
 # NR_EXPTS=`cat ${EXPT_FILE} | wc -l`
 # MAX_PARALLEL_JOBS=12
-# sbatch --array=1-${NR_EXPTS}%${MAX_PARALLEL_JOBS} slurm_arrayjob.sh $EXPT_FILE
+# sbatch --array=1-${NR_EXPTS}%${MAX_PARALLEL_JOBS} array_job.sh $EXPT_FILE
 # ```
 #
-# or, equivalently and as intended, with provided `run_experiement`:
+# or, equivalently and as intended, with provided `run_experiment`:
 # ```
-# run_experiment -b slurm_arrayjob.sh -e experiments.txt -m 12
+# run_experiment -b array_job.sh -e experiments.txt -m 12
 # ```
 
 
@@ -132,9 +132,9 @@ mkdir -p ${dst_path}  # make it if required
 #       https://download.samba.org/pub/rsync/rsync.html
 
 rsync --archive --update --compress --progress ${src_path}/ ${dst_path}
-
-#Extract the input tar containing all the video
-tar --exclude="._*" -xjf "${dst_path}/input.tar.bz2" -C "${dst_path}/"
+echo "${src_path}/ is up to date with ${dst_path}"
+#Extract the input tar containing all the video - This occurs outside of the parallel jobs now.
+#tar --exclude="._*" -xjf "${dst_path}/input.tar.bz2" -C "${dst_path}/"
 
 # ==============================
 # Finally, run the experiment!
@@ -149,7 +149,6 @@ dst_path=${SCRATCH_HOME}/${project_name}/data/output
 mkdir -p ${dst_path}
 
 experiment_text_file=$1
-#COMMAND="`sed \"${SLURM_ARRAY_TASK_ID}q;d\" ${experiment_text_file}`"
 data_file="`sed \"${SLURM_ARRAY_TASK_ID}q;d\" ${experiment_text_file}`"
 
 echo "Analysing ${data_file}"
