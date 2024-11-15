@@ -24,7 +24,8 @@ A subset of `experiments_full.txt`.
 
 The structure for the `array_job.sh` is taken from [cluster-scripts](https://github.com/cdt-data-science/cluster-scripts/tree/master). This is an incredibly useful repo for use with SLURM. Details on how to use this file are contained within it.
 
-Assuming you have installed `cluster-scripts` to your DFS and run the `setup.sh` in AFS then DFS, run:
+Assuming you have installed `cluster-scripts` to your DFS and run the `setup.sh` in AFS then DFS, run the following code 
+wherever the repo is downloaded in DFS (usually `/home/{USER}/SAM2_cluster`}:
 
 ```
 run_experiment -b array_job.sh -e experiments.txt -m 12
