@@ -6,8 +6,8 @@ tar --exclude="._*" -xjf "${scratch_input}/${file_name}.tar.bz2" -C "${scratch_i
 
 python segment.py \
       --video_dir="${scratch_input}/${file_name}" \
-      --model_cfg="configs/sam2.1/sam2.1_hiera_l.yaml" \
-      --checkpoint="${SAM2_HOME}/checkpoints/sam2.1_hiera_large.pt" \
+      --model_cfg="configs/sam2.1/sam2.1_hiera_b+.yaml" \
+      --checkpoint="${SAM2_HOME}/checkpoints/sam2.1_hiera_base_plus.pt" \
       --annotation="${scratch_input}/${file_name}/${file_name}.csv" \
       --experiment_name="${file_name}" \
       --output_destination="${scratch_output}"
