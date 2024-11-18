@@ -54,10 +54,11 @@ if [ ! -d "${project_path}/sam2" ]; then
 fi
 
 #Download the SAM2 checkpoints if checkpoints folder does not already exist - Edited because it does not need to be imported with new data
-if [ ! -f "${project_path}/sam2/checkpoints/sam2.1_hiera_large.pt" ]; then
+if [ ! -f "${project_path}/sam2/checkpoints/sam2.1_hiera_base_plus.pt" ]; then
   #Run any installation commands
   mkdir -p "${project_path}/sam2/checkpoints"
-  wget -P "${project_path}/sam2/checkpoints" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
+#  wget -P "${project_path}/sam2/checkpoints" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
+  wget -P "${project_path}/sam2/checkpoints" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_base_plus.pt
 fi
 
 #Ensure that you can use the "run_experiments" wrapper
