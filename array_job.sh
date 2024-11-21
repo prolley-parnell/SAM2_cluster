@@ -132,8 +132,8 @@ mkdir -p ${dst_path}  # make it if required
 # * for more about the (endless) rsync options, see the docs:
 #       https://download.samba.org/pub/rsync/rsync.html
 
-rsync --archive --update --compress --progress ${src_path}/ ${dst_path}
-echo "${src_path}/ is up to date with ${dst_path}"
+#rsync --archive --update --compress --progress ${src_path}/ ${dst_path}
+#echo "${src_path}/ is up to date with ${dst_path}"
 #Extract the input tar containing all the video - This occurs outside of the parallel jobs now.
 #tar --exclude="._*" -xjf "${dst_path}/input.tar.bz2" -C "${dst_path}/"
 
@@ -151,7 +151,7 @@ mkdir -p ${dst_path}
 
 experiment_text_file=$1
 data_file="`sed \"${SLURM_ARRAY_TASK_ID}q;d\" ${experiment_text_file}`"
-
+rsync --archive --update --compress --progress "${dfs_src_path}/${data_file}.tar.bz2" ${scratch_dst_path}
 echo "Analysing ${data_file}"
 bash single_job.sh ${data_file} ${src_path} ${dst_path}
 echo "Command ran successfully!"
@@ -167,6 +167,12 @@ echo "Moving output data back to DFS"
 
 src_path=${SCRATCH_HOME}/${project_name}/data/output
 dst_path=/home/${USER}/${project_name}/data/output
+rsync --archive --update --compress --progress ${src_path}/ ${dst_path}
+
+
+src_path=${SCRATCH_HOME}/${project_name}/data/models
+dst_path=/home/${USER}/${project_name}/data/models
+mkdir -p ${dst_path}
 rsync --archive --update --compress --progress ${src_path}/ ${dst_path}
 
 
