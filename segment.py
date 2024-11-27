@@ -99,16 +99,18 @@ def main(args):
         }
 
     frames = [f for f in video_segments]  # This extracts the frame indices
-    output_stacked_mask = []
+    output_mask_dict = {}
     for f in frames:
         for out_obj_id, out_mask in video_segments[f].items():
             flat_mask = np.flatnonzero(out_mask)
             if len(flat_mask) > 0: #Ensure not to waste space with any empty frames
-                output_stacked_mask.append(np.column_stack((np.ones_like(flat_mask) * f, flat_mask)))
-    sparse = np.vstack(output_stacked_mask)
+                encoded_mask = pmask.encode(np.asfortranarray(out_mask))
+                if not output_mask_dict.keys().__contains__(out_obj_id):
+                    output_mask_dict[out_obj_id] = {f : encoded_mask}
+                else:
+                    output_mask_dict[out_obj_id][f] = encoded_mask
 
-    #np.save(f"{args.output_destination}/{args.experiment_name}.npy", video_segments)
-    np.savez_compressed(f"{args.output_destination}/{args.experiment_name}", obj_0=sparse )
+    np.savez_compressed(f"{args.output_destination}/{args.experiment_name}", mask_dict=output_mask_dict)
 
 
 if __name__ == "__main__":
