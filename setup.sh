@@ -49,6 +49,7 @@ if [ ! -d "${project_path}/sam2" ]; then
   export TMPDIR TMP TEMP
   cd sam2
   pip install -e .
+  pip install pycocotools
   conda env config vars set SAM2_HOME="${project_path}/sam2"
   conda deactivate
 fi
