@@ -3,6 +3,7 @@ import os
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 import numpy as np
 import torch
+import pycocotools.mask as pmask
 # Initialise the video predictor
 from sam2.build_sam import build_sam2_video_predictor
 import argparse
@@ -58,23 +59,34 @@ def main(args):
     inference_state = predictor.init_state(video_path=video_dir, offload_video_to_cpu=True, offload_state_to_cpu=False)
 
     #--- Load Video Annotations
-    csv_x, csv_y, csv_flag, csv_frame = np.loadtxt(
+    csv_object_id, csv_x, csv_y, csv_flag, csv_frame = np.loadtxt(
     args.annotation, delimiter=",", comments='#', dtype=float, unpack=True)
 
+    if csv_frame.size == 0:
+        print("there is an issue with unpacking, you may be using an old annotation without object id")
+        exit(1)
+
+    obj_idx = csv_object_id.astype(int)
     frame_idx = csv_frame.astype(int)
     labels = csv_flag.astype(int)
     points = np.column_stack((csv_x, csv_y)).astype(np.float32)
 
-    unique_frames = np.unique(frame_idx)
-    for u in unique_frames:
-        #--- Add annotations to predictor
-        _, _, out_mask_logits = predictor.add_new_points_or_box(
-            inference_state=inference_state,
-            frame_idx=u,
-            obj_id=1,
-            points=points[frame_idx == u],
-            labels=labels[frame_idx == u],
-        )
+    unique_obj = np.unique(obj_idx)
+    for o in unique_obj:
+        frame_subset = frame_idx[obj_idx == o]
+        point_subset = points[obj_idx == o]
+        label_subset = labels[obj_idx == o]
+        unique_frames = np.unique(frame_subset)
+        for u in unique_frames:
+
+            #--- Add annotations to predictor
+            _, _, out_mask_logits = predictor.add_new_points_or_box(
+                inference_state=inference_state,
+                frame_idx=u,
+                obj_id=o,
+                points=point_subset[frame_subset == u],
+                labels=label_subset[frame_subset == u],
+            )
 
     #--- Propagate through video
 
