@@ -55,7 +55,7 @@
 #SBATCH --partition=PGR-Standard
 
 # Any nodes to exclude from selection
-# #SBATCH --exclude=damnii[01-12]
+#SBATCH --exclude=damnii[01-12]
 
 
 # =====================
@@ -115,12 +115,20 @@ conda activate ${CONDA_ENV_NAME}
 echo "Moving input data to the compute node's scratch space: $SCRATCH_DISK"
 
 project_name=segment
-# input data directory path on the DFS
-src_path=/home/${USER}/${project_name}/data/input
 
-# input data directory path on the scratch disk of the node
-dst_path=${SCRATCH_HOME}/${project_name}/data/input
-mkdir -p ${dst_path}  # make it if required
+DFS_HOME=/home/${USER}
+
+input="${project_name}/data/input"
+output="${project_name}/data/output"
+
+# input data directory path on the DFS
+dfs_input_path="${DFS_HOME}/${input}"
+dfs_output_path="${DFS_HOME}/${output}"
+scratch_input_path="${SCRATCH_HOME}/${input}"
+scratch_output_path="${SCRATCH_HOME}/${output}"
+
+mkdir -p ${scratch_input_path}  # make it if required
+mkdir -p ${scratch_output_path}
 
 # Important notes about rsync:
 # * the --compress option is going to compress the data before transfer to send
@@ -144,16 +152,13 @@ mkdir -p ${dst_path}  # make it if required
 # ${SLURM_ARRAY_TASK_ID} is simply the number of the job within the array. If
 # you execute `sbatch --array=1:100 ...` the jobs will get numbers 1 to 100
 # inclusive.
-src_path=${SCRATCH_HOME}/${project_name}/data/input
-dst_path=${SCRATCH_HOME}/${project_name}/data/output
 
-mkdir -p ${dst_path}
 
 experiment_text_file=$1
 data_file="`sed \"${SLURM_ARRAY_TASK_ID}q;d\" ${experiment_text_file}`"
-rsync --archive --update --compress --progress "${dfs_src_path}/${data_file}.tar.bz2" ${scratch_dst_path}
+rsync --archive --update --compress --progress "${dfs_input_path}/${data_file}.tar.bz2" ${scratch_input_path}
 echo "Analysing ${data_file}"
-bash single_job.sh ${data_file} ${src_path} ${dst_path}
+bash single_job.sh ${data_file} ${scratch_input_path} ${scratch_output_path}
 echo "Command ran successfully!"
 
 
@@ -164,16 +169,7 @@ echo "Command ran successfully!"
 # example, send it back to the DFS with rsync
 
 echo "Moving output data back to DFS"
-
-src_path=${SCRATCH_HOME}/${project_name}/data/output
-dst_path=/home/${USER}/${project_name}/data/output
-rsync --archive --update --compress --progress ${src_path}/ ${dst_path}
-
-
-src_path=${SCRATCH_HOME}/${project_name}/data/models
-dst_path=/home/${USER}/${project_name}/data/models
-mkdir -p ${dst_path}
-rsync --archive --update --compress --progress ${src_path}/ ${dst_path}
+rsync --archive --update --compress --progress ${scratch_output_path}/ ${dfs_output_path}
 
 
 # =========================
