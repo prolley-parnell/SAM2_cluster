@@ -56,11 +56,16 @@ def main(args):
 
     #--- Initialise predictor
     predictor = build_sam2_video_predictor(args.model_cfg, args.checkpoint, device=device)
-    inference_state = predictor.init_state(video_path=video_dir, offload_video_to_cpu=True, offload_state_to_cpu=False)
+    inference_state = predictor.init_state(video_path=video_dir, offload_video_to_cpu=True, offload_state_to_cpu=False, async_loading_frames=True)
 
     #--- Load Video Annotations
-    csv_object_id, csv_x, csv_y, csv_flag, csv_frame = np.loadtxt(
-    args.annotation, delimiter=",", comments='#', dtype=float, unpack=True)
+    try:
+        csv_object_id, csv_x, csv_y, csv_flag, csv_frame = np.loadtxt(
+        args.annotation, delimiter=",", comments='#', dtype=float, unpack=True)
+    except ValueError: #Catch the error where some annotations were written before the object assignment capability was written and assumed all objects were the same
+        csv_x, csv_y, csv_flag, csv_frame = np.loadtxt(
+            args.annotation, delimiter=",", comments='#', dtype=float, unpack=True)
+        csv_object_id = np.zeros_like(csv_frame)
 
     if csv_frame.size == 0:
         print("there is an issue with unpacking, you may be using an old annotation without object id")
