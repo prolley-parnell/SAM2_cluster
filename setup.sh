@@ -1,6 +1,6 @@
 #USER=$1 #sXXXXXXXX
 PROJECT_NAME=segment
-afs_input_path=/afs/inf.ed.ac.uk/user/s20/${USER}/${PROJECT_NAME}/data/input #s20 is the first two digits of the student number given in $USER
+afs_data_path=/afs/inf.ed.ac.uk/user/s20/${USER}/${PROJECT_NAME}/data #s20 is the first two digits of the student number given in $USER
 
 echo "You are on branch dfs so are setting up the DFS."
 echo "Press Ctrl+C if this is not correct and switch to the correct branch."
@@ -23,17 +23,17 @@ if [ ! -d "${dfs_project_path}" ]; then
   mkdir -p ${dfs_project_path}
 fi
 
-dfs_input_path="${dfs_project_path}/data/input"
+#dfs_input_path="${dfs_project_path}/data/input"
 
 #Make the data input path if it is not present
-if [ ! -d ${dfs_input_path} ]; then
-  mkdir -p ${dfs_input_path}
-fi
+#if [ ! -d ${dfs_input_path} ]; then
+#  mkdir -p ${dfs_input_path}
+#fi
 
 #Synchronise the folders and move the AFS input to DFS input
-rsync --archive --update --compress --progress ${afs_input_path}/ ${dfs_input_path}
-
-echo "${afs_input_path}/ up to date with ${dfs_input_path}"
+#rsync --archive --update --compress --progress ${afs_input_path}/ ${dfs_input_path}
+#
+#echo "${afs_input_path}/ up to date with ${dfs_input_path}"
 
 #Clone the SAM2 repo -if it is not already present
 if [ ! -d "${dfs_project_path}/sam2" ]; then
@@ -62,17 +62,19 @@ fi
 #  wget -P "${dfs_project_path}/sam2/checkpoints" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_base_plus.pt
 #fi
 
-if [ ! -f "${project_path}/sam2/checkpoints/sam2.1_hiera_large.pt" ]; then
+if [ ! -f "${dfs_project_path}/sam2/checkpoints/sam2.1_hiera_large.pt" ]; then
   #Run any installation commands
-  mkdir -p "${project_path}/sam2/checkpoints"
-  wget -P "${project_path}/sam2/checkpoints" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
+  mkdir -p "${dfs_project_path}/sam2/checkpoints"
+  wget -P "${dfs_project_path}/sam2/checkpoints" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
 fi
+
+rsync --archive --update --compress --progress "${afs_data_path}/input.tar.bz2" "${dfs_project_path}/data"
 
 #Ensure that you can use the "run_experiments" wrapper
 #echo 'export PATH=/home/$USER/cluster-scripts/experiments:$PATH' >> ~/.bashrc
-if [ -f "${dfs_input_path}/input.tar.bz2" ]; then
-  tar --exclude="._*" -xjvf "${dfs_input_path}/input.tar.bz2" -C "${dfs_project_path}/data"
-  rm -rf "${dfs_input_path}/input.tar.bz2"
+if [ -f "${dfs_project_path}/data/input.tar.bz2" ]; then
+  tar --exclude="._*" -xjvf "${dfs_project_path}/data/input.tar.bz2" -C "${dfs_project_path}/data"
+  rm -rf "${dfs_project_path}/data/input.tar.bz2"
 else
-  echo "Could not find '${dfs_input_path}/input.tar.bz2'"
+  echo "Could not find '${dfs_project_path}/data/input.tar.bz2'"
 fi
