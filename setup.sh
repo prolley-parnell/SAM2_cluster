@@ -67,12 +67,15 @@ if [ ! -f "${dfs_project_path}/sam2/checkpoints/sam2.1_hiera_large.pt" ]; then
   mkdir -p "${dfs_project_path}/sam2/checkpoints"
   wget -P "${dfs_project_path}/sam2/checkpoints" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
 fi
+echo "sam2.1_hiera_large.pt has been installed at '${dfs_project_path}/sam2/checkpoints'"
+
 
 rsync --archive --update --compress --progress "${afs_data_path}/input.tar.bz2" "${dfs_project_path}/data"
-
+echo "input.tar.bz2 is up to date"
 #Ensure that you can use the "run_experiments" wrapper
 #echo 'export PATH=/home/$USER/cluster-scripts/experiments:$PATH' >> ~/.bashrc
 if [ -f "${dfs_project_path}/data/input.tar.bz2" ]; then
+  echo "extracting from input.tar.bz2"
   tar --exclude="._*" -xjvf "${dfs_project_path}/data/input.tar.bz2" -C "${dfs_project_path}/data"
   rm -rf "${dfs_project_path}/data/input.tar.bz2"
 else
