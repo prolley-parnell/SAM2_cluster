@@ -21,10 +21,10 @@ if [ $# -eq 0 ]; then
 
 else
   echo "Set name is: ${set_name}"
-  if [ -f "${dfs_input_path}/input/${set_name}.tar.bz2" ]; then
-    tar --exclude="._*" -xjvf "${dfs_input_path}/input/${set_name}.tar.bz2" -C "${dfs_input_path}/input"
-    rm -rf "${dfs_input_path}/input/${set_name}.tar.bz2"
+  if [ -f "${dfs_input_path}/${set_name}.tar.bz2" ]; then
+    tar --exclude="._*" -xjvf "${dfs_input_path}/${set_name}.tar.bz2" -C "${dfs_input_path}/"
+    rm -rf "${dfs_input_path}/${set_name}.tar.bz2"
   else
-    echo "Could not find '${dfs_input_path}/input.tar.bz2'"
+    echo "Could not find '${dfs_input_path}/${set_name}.tar.bz2'"
   fi
 fi
