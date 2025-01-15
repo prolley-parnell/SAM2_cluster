@@ -115,17 +115,25 @@ conda activate ${CONDA_ENV_NAME}
 echo "Moving input data to the compute node's scratch space: $SCRATCH_DISK"
 
 project_name=segment
+set_name=set_1
 
 DFS_HOME=/home/${USER}
 
-input="${project_name}/data/input"
-output="${project_name}/data/output"
+input="${project_name}/data/input/${set_name}"
+output="${project_name}/data/output/${set_name}"
 
 # input data directory path on the DFS
 dfs_input_path="${DFS_HOME}/${input}"
 dfs_output_path="${DFS_HOME}/${output}"
 scratch_input_path="${SCRATCH_HOME}/${input}"
 scratch_output_path="${SCRATCH_HOME}/${output}"
+
+if [ ! -d "$dfs_input_path" ]; then
+  echo "${dfs_input_path} does not exist, exiting"
+  exit
+fi
+
+mkdir -p ${dfs_output_path}
 
 mkdir -p ${scratch_input_path}  # make it if required
 mkdir -p ${scratch_output_path}
@@ -139,11 +147,6 @@ mkdir -p ${scratch_output_path}
 #       ${SCRATCH_HOME}/project_name/data/input/input
 # * for more about the (endless) rsync options, see the docs:
 #       https://download.samba.org/pub/rsync/rsync.html
-
-#rsync --archive --update --compress --progress ${src_path}/ ${dst_path}
-#echo "${src_path}/ is up to date with ${dst_path}"
-#Extract the input tar containing all the video - This occurs outside of the parallel jobs now.
-#tar --exclude="._*" -xjf "${dst_path}/input.tar.bz2" -C "${dst_path}/"
 
 # ==============================
 # Finally, run the experiment!

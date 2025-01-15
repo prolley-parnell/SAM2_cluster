@@ -1,6 +1,6 @@
 file_name=$1 #YYMMDD-HHMM_camX_fruit_sessionY
-scratch_input=$2 #src_path=${SCRATCH_HOME}/${PROJECT_NAME}/data/input
-scratch_output=$3 #dest_path=${SCRATCH_HOME}/${PROJECT_NAME}/data/output
+scratch_input=$2 #src_path=${SCRATCH_HOME}/${PROJECT_NAME}/data/input/set_1
+scratch_output=$3 #dest_path=${SCRATCH_HOME}/${PROJECT_NAME}/data/output/set_1
 mkdir -p "${scratch_input}/${file_name}"
 tar --exclude="._*" -xjvf "${scratch_input}/${file_name}.tar.bz2" -C "${scratch_input}/"
 
