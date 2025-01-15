@@ -17,23 +17,15 @@ if [ ! -d "${conda_path}" ]; then
 fi
 
 dfs_project_path=/home/${USER}/${PROJECT_NAME}
-
-#Make the project path if it is not present
-if [ ! -d "${dfs_project_path}" ]; then
-  mkdir -p ${dfs_project_path}
-fi
-
-#dfs_input_path="${dfs_project_path}/data/input"
+dfs_input_path="${dfs_project_path}/data/input"
+afs_input_path="${afs_data_path}/input"
 
 #Make the data input path if it is not present
-#if [ ! -d ${dfs_input_path} ]; then
-#  mkdir -p ${dfs_input_path}
-#fi
+mkdir -p ${dfs_input_path}
 
 #Synchronise the folders and move the AFS input to DFS input
-#rsync --archive --update --compress --progress ${afs_input_path}/ ${dfs_input_path}
-#
-#echo "${afs_input_path}/ up to date with ${dfs_input_path}"
+rsync --archive --update --compress --progress ${afs_input_path}/ ${dfs_input_path}
+echo "${afs_input_path}/ up to date with ${dfs_input_path}"
 
 #Clone the SAM2 repo -if it is not already present
 if [ ! -d "${dfs_project_path}/sam2" ]; then
@@ -68,16 +60,3 @@ if [ ! -f "${dfs_project_path}/sam2/checkpoints/sam2.1_hiera_large.pt" ]; then
   wget -P "${dfs_project_path}/sam2/checkpoints" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
 fi
 echo "sam2.1_hiera_large.pt has been installed at '${dfs_project_path}/sam2/checkpoints'"
-
-
-rsync --archive --update --compress --progress "${afs_data_path}/input.tar.bz2" "${dfs_project_path}/data"
-echo "input.tar.bz2 is up to date"
-#Ensure that you can use the "run_experiments" wrapper
-#echo 'export PATH=/home/$USER/cluster-scripts/experiments:$PATH' >> ~/.bashrc
-if [ -f "${dfs_project_path}/data/input.tar.bz2" ]; then
-  echo "extracting from input.tar.bz2"
-  tar --exclude="._*" -xjvf "${dfs_project_path}/data/input.tar.bz2" -C "${dfs_project_path}/data"
-  rm -rf "${dfs_project_path}/data/input.tar.bz2"
-else
-  echo "Could not find '${dfs_project_path}/data/input.tar.bz2'"
-fi
