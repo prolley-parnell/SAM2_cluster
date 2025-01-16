@@ -16,7 +16,7 @@
 #
 # or, equivalently and as intended, with provided `run_experiment`:
 # ```
-# run_experiment -b array_job.sh -e experiments.txt -m 12
+# run_experiment -b set_array_job/array_job_set_3.sh -e text_lists/set_3.txt -m 12
 # ```
 
 
@@ -115,11 +115,12 @@ conda activate ${CONDA_ENV_NAME}
 echo "Moving input data to the compute node's scratch space: $SCRATCH_DISK"
 
 project_name=segment
+set_name=set_3
 
 DFS_HOME=/home/${USER}
 
-input="${project_name}/data/input"
-output="${project_name}/data/output"
+input="${project_name}/data/input/${set_name}"
+output="${project_name}/data/output/${set_name}"
 
 # input data directory path on the DFS
 dfs_input_path="${DFS_HOME}/${input}"
