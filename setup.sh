@@ -8,7 +8,8 @@ echo "Press Ctrl+C if this is not correct and switch to the correct branch."
 #Install miniconda if it is not already installed
 conda_path=/home/${USER}/miniconda3
 if [ ! -d "${conda_path}" ]; then
-  wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O "${conda_path}"/miniconda.sh
+  mkdir -p ${conda_path}
+  wget -O "${conda_path}"/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
   bash "${conda_path}"/miniconda.sh -b -u
   rm "${conda_path}"/miniconda.sh
   source "${conda_path}"/bin/activate
