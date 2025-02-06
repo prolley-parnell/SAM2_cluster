@@ -21,6 +21,12 @@ Run the following command wherever (it uses absolute paths) to install all the d
 bash setup.sh  
 ```
 
+The installation requires input when initialising the conda environment.
+It also may take a little while when it reaches:
+```
+Obtaining file:///home/{USER}/segment/sam2
+  Installing build dependencies ... |
+```
 ## File List
 Assuming you have installed `cluster-scripts` to your DFS and run the `setup.sh` in AFS then DFS, run the following code 
 wherever the repo is downloaded in DFS (usually `/home/{USER}/SAM2_cluster`}:
