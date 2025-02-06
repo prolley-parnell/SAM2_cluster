@@ -9,7 +9,7 @@ Use the following command with [branch_name] replaced with `afs`, `dfs`, or `scr
 git switch [branch name]
 ```
 
-Save any data in ```/home/{USER}/{PROJECT_NAME}```
+Save any data in ```/home/{USER}/{PROJECT_NAME}/data/```
 
 ## File List
 `experiments.txt` - Passed as an argument to the `array_job.sh` with each line consisting of an experiment name. 
@@ -26,6 +26,11 @@ The structure for the `array_job.sh` is taken from [cluster-scripts](https://git
 
 Assuming you have installed `cluster-scripts` to your DFS and run the `setup.sh` in AFS then DFS, run the following code 
 wherever the repo is downloaded in DFS (usually `/home/{USER}/SAM2_cluster`}:
+
+```bash
+bash setup.sh set2
+```
+In this example, it would unzip the file at `/home/{USER}/segment/data/input/set2.tar.bz2` and move it to `/home/{USER}/segment/data/input/`
 
 ```
 run_experiment -b array_job.sh -e experiments.txt -m 12
