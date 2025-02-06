@@ -25,8 +25,7 @@ afs_input_path="${afs_data_path}/input"
 mkdir -p ${dfs_input_path}
 
 #Synchronise the folders and move the AFS input to DFS input
-rsync --archive --update --compress --progress ${afs_input_path}/ ${dfs_input_path}
-echo "${afs_input_path}/ up to date with ${dfs_input_path}"
+rsync --archive --update --compress --progress ${afs_input_path}/ ${dfs_input_path} && echo "${afs_input_path}/ up to date with ${dfs_input_path}"
 
 #Clone the SAM2 repo -if it is not already present
 if [ ! -d "${dfs_project_path}/sam2" ]; then
@@ -60,5 +59,7 @@ if [ ! -f "${dfs_project_path}/sam2/checkpoints/sam2.1_hiera_large.pt" ]; then
   #Run any installation commands
   mkdir -p "${dfs_project_path}/sam2/checkpoints"
   wget -P "${dfs_project_path}/sam2/checkpoints" https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt
+else
+  echo "sam2.1_hiera_large.pt has been installed at '${dfs_project_path}/sam2/checkpoints'"
 fi
-echo "sam2.1_hiera_large.pt has been installed at '${dfs_project_path}/sam2/checkpoints'"
+
