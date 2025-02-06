@@ -32,6 +32,7 @@ echo "${afs_input_path}/ up to date with ${dfs_input_path}"
 if [ ! -d "${dfs_project_path}/sam2" ]; then
   cd ${dfs_project_path} || ( echo "Could not enter folder ${dfs_project_path}" && exit )
   git clone https://github.com/facebookresearch/sam2.git
+  source "${conda_path}"/bin/activate
   conda create -n sam2 python=3.10
   conda activate sam2
   #To resolve issues with downloading packages to a /tmp folder that is not big enough

@@ -15,25 +15,15 @@ git switch [branch name]
 
 Save any data in ```/home/{USER}/{PROJECT_NAME}```
 
+Run the following command wherever (it uses absolute paths) to install all the dependencies.
+
+```bash
+bash setup.sh  
+```
+
 ## File List
-`experiments.txt` - Passed as an argument to the `array_job.sh` with each line consisting of an experiment name. 
-Each experiment name is in the `[segment_folder]/data/input` file with a `.tar.bz2` file containing video frames and an annotation `.csv`.
-A subset of `experiments_full.txt`.
-
-`experiments_full.txt` - A full list of all the particular experiment names that will be evaluated by this code, saved for future reference.
-
-`segment.py` - The code that performs the segmentation using SAM2 and exports the result as `.npz`
-
-`single_job.sh` - A single instance that calls `segment.py` with arguments
-
-The structure for the `array_job.sh` is taken from [cluster-scripts](https://github.com/cdt-data-science/cluster-scripts/tree/master). This is an incredibly useful repo for use with SLURM. Details on how to use this file are contained within it.
-
 Assuming you have installed `cluster-scripts` to your DFS and run the `setup.sh` in AFS then DFS, run the following code 
 wherever the repo is downloaded in DFS (usually `/home/{USER}/SAM2_cluster`}:
-
-```
-run_experiment -b array_job.sh -e experiments.txt -m 12
-```
 
 If `run_experiment` can't be found, you may need to perform the following first:
 ```
