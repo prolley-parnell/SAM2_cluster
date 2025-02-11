@@ -31,6 +31,8 @@ rsync --archive --update --compress --progress ${afs_input_path}/ ${dfs_input_pa
 if [ ! -d "${dfs_project_path}/sam2" ]; then
   cd ${dfs_project_path} || ( echo "Could not enter folder ${dfs_project_path}" && exit )
   git clone https://github.com/facebookresearch/sam2.git
+fi
+if { ! conda env list | grep 'sam2'; } >/dev/null 2>&1; then
   source "${conda_path}"/bin/activate
   conda create -n sam2 python=3.10
   conda activate sam2
